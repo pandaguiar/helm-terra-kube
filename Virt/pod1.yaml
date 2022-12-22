@@ -1,0 +1,23 @@
+# o tain vem marcado como necessário e portanto é preciso
+# altera-lo e adicionar um toleration para que entenda que
+# pode ser e não que vai ser.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod1
+  name: pod1
+spec:
+  nodeSelector:
+    app: virt
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
+      operator: Exists
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+      operator: Exists
+  containers:
+  - name: pod1-conatiner
+    image: httpd:2.4.41-alpine

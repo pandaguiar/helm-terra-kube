@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: deploy-importante
+    id: muito-importante
+  name: deploy-importante
+  namespace: virtualizacao
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: deploy-importante
+      id: muito-importante
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: deploy-importante
+        id: muito-importante
+    spec:
+      podAntiAffinity:
+      requireDuringSchedulingIgnoredDuringExecution:
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: id
+              operator: In
+              values:
+              - muito-importante
+          topologyKey: kubernetes.io/hostname
+      containers:
+      - image: nginx:1.17.6-alpine
+        name: container1
+      - image: kubernetes/pause
+        name: container2
+status: {}
